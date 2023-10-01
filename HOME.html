@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home | Sunway</title>
+  <link rel="shortcut icon" type="image/png" href="sunwayicon.png">
+  <link rel="stylesheet" href="HOMEstyle.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600&display=swap" rel="stylesheet">
+<script>
+  /* function to uncheck all other checkbox when another one is checked */
+  function handleCheckboxChange(checkboxId) {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.id !== checkboxId) {
+          checkbox.checked = false;
+        }
+    });
+  }
+    
+  /* function to element id="line" */
+  function anchorline() {
+    var targetElement = document.getElementById('line');
+    targetElement.scrollIntoView({ behavior: 'smooth' });
+}
+
+/* function to prevent user from scrolling below the footer */
+
+/* check if bottom of footer is in view */
+function isBottomOfFooterInView() {
+  const footer = document.querySelector('.footer');
+  const footerPosition = footer.getBoundingClientRect();
+  return footerPosition.bottom <= window.innerHeight;
+}
+
+/* prevent user from scrolling down when bottom of footer is in view */
+function lockScrollAtFooter() {
+  if (isBottomOfFooterInView()) {
+    const footer = document.querySelector('.footer');
+    const footerPosition = footer.getBoundingClientRect();
+    const scrollOffset = footerPosition.bottom - window.innerHeight;
+    window.scrollBy(0, scrollOffset);
+  }
+}
+
+/* event listener */
+document.addEventListener('scroll', lockScrollAtFooter);
+
+
+</script>
+</head>
+<body>
+<input type="checkbox" id="menu-toggle">
+
+  <header>
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <div class="logo">
+      <a href="HOME.html"><img src="sunwaylogo.png" alt="Website Logo"></a>
+    </div>
+    <nav class="menu">
+      <img class="menured" src="ff0000.png">
+      <label for="menu-toggle" class="close-icon">&#10006;</label>
+      <a href="HOME.html">HOME</a>
+      <hr class="menuline">
+      <a href="SDG.html">SDG</a>
+      <hr class="menuline">
+      <a href="OUR GOALS.html">OUR GOALS</a>
+      <hr class="menuline">
+      <a href="SUSTAINABLE PROGRAM.html">SUSTAINABLE PROGRAM</a>
+    </nav>
+  </header>
+
+<!-- Top part of the page containing sunway background -->
+  <div class="section1">
+    <div class="section1text">
+      <div class="ourtext">
+        <div class="text1">OUR</div>
+      </div>
+      <div class="initiativestext">
+        <div class="text">INITIATIVES</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- second section, below the first section. Contains slider until footer-->
+  <div class="section2">
+    <!-- class protrude is the tab-looking design for the starting of section 2-->
+    <div class="protrude"></div>
+    <img class="protrude2" src="inverseradius.png">
+    <div class="bigtitle">
+      RESPONSIBLE WASTE MANAGEMENT
+    </div>
+    <div class="belowinfotext">
+      We are mindful of the impact that developments have on our environment, and constantly strive to be more efficient and conscientious in exploring new ways of going green.
+    </div>
+    
+    <!--Image carousel, onclick calls anchorline() function in js-->
+    <div onclick="anchorline()" class="slider-frame">
+      <div class="slide-images">
+        <div class="img-container">
+          <label for="cbplastic">
+            <img class="slideimage" src="plastic.png">
+            <div class="imagetextgrey">
+              ZERO SINGLE USE PLASTIC
+            </div>
+            <div class="learnmoregrey">
+              Learn more
+            </div>
+          </label>
+        </div>
+        <div class="img-container">
+          <label for="cbfabric">
+            <img class="slideimage" src="fabric.png">
+            <div class="imagetext">
+              FABRIC RECYCLING
+            </div>
+            <div class="learnmore">
+              Learn more
+            </div>
+          </label>
+        </div>
+        <div class="img-container">
+          <label for="cboil">
+            <img class="slideimage" src="oil.png">
+            <div class="imagetextgrey">
+              REPURPOSING USED COOKING OIL
+            </div>
+            <div class="learnmoregrey">
+              Learn more
+            </div>
+          </label>
+        </div>
+        <div class="img-container">
+          <label for="cbfood">
+            <img class="slideimage" src="food.png">
+            <div class="imagetext">
+              TACKLING FOOD WASTE
+            </div>
+            <div class="learnmore">
+              Learn more
+            </div>
+          </label>
+        </div>
+        <div class="img-container">
+          <label for="cbsoap">
+            <img class="slideimage" src="soap.png">
+            <div class="imagetext">
+              REPURPOSING USED SOAP
+            </div>
+            <div class="learnmore">
+              Learn more
+            </div>
+          </label>
+        </div>
+      </div>
+    
+
+      <!--a line which the javascript scrolls to once anchorline() function is called-->
+      <br>
+      <hr id="line">
+      <br>
+    
+      <!--checkbox are used a pseudo buttons, clicking on the image in the carousel activates it's checkbox-->
+      <input type="checkbox" id="cbplastic" onchange="handleCheckboxChange('cbplastic')">
+      <span>
+        <div class="infotitletext">
+          ZERO SINGLE-USE PLASTICS
+        </div>
+        <div class="infotext">
+          To reduce the consumption of single-use plastics, we practice the Bring Your Own Bottle (BYOB) concept at all internal events, where participants are encouraged to bring their own water bottles, containers, and cutlery. 
+          <br><br>
+          Since 2017, we saw a 70% reduction in the purchase of single-use plastic bottles. In our malls, the Metal Straw Campaign was launched as part of the effort. Shoppers received a set of metal straws when they spent a minimum of RM100 in two receipts mall-wide. A total of 75,551 metal straws were given out.
+        </div>
+      </span>
+    
+      <input type="checkbox" id="cbfabric" onchange="handleCheckboxChange('cbfabric')">
+      <span>
+        <div class="infotitletext">
+          FABRIC RECYCLING
+        </div>
+        <div class="infotext">
+          Textile dye and microplastics from synthetic clothing pollute water bodies, thus endangering aquatic life and ultimately human health. In an effort to combat this, Kloth Cares bins are installed across several of our properties. 
+          <br><br>
+          In 2020, we managed to collect and recycle 24,876 kg of used textiles. Fabrics that are collected will be donated to charitable organizations and exported to developing countries to be reused as industrial wiping cloth or converted into fuel and energy.
+        </div>
+      </span>
+    
+      <input type="checkbox" id="cboil" onchange="handleCheckboxChange('cboil')">
+      <span>
+        <div class="infotitletext">
+          REPURPOSING USED COOKING OIL
+        </div>
+        <div class="infotext">
+          Several of our hotels and theme parks actively repurpose used cooking oil into biodiesel to minimize cooking oil waste. In partnership with FatHopes Energy, a social enterprise that produces biodiesel in Malaysia, this initiative helps prevent drains from getting clogged and reduces reliance on fossil fuels, thus eliminating GHG emissions.
+          <br><br>
+          A proportion of the used cooking oil generated by the Group’s six participating hotels is collected weekly by FatHopes Energy to be converted into biodiesel.
+          <br><br>
+          In 2020, we managed to collect 9,950 kg of used cooking oil. The biodiesel produced emits 88% fewer carbon emissions compared to fossil diesel, saving 26.4 tonnes of CO2.
+        </div>
+      </span>
+    
+      <input type="checkbox" id="cbfood" onchange="handleCheckboxChange('cbfood')">
+      <span>
+        <div class="infotitletext">
+          TACKLING FOOD WASTE
+        </div>
+        <div class="infotext">
+          In 2019, we invested in a compost machine designed to process up to 500 liters of food waste every day, hence saving 180,000 liters of food waste from landfills every year. Food composting machines installed in Sunway City Kuala Lumpur reduce up to 80% of food waste within 24 hours by transforming it into bio-organic compost. In 2020, the machine processed approximately 15,030 kg of food waste and produced 8,803 kg of compost, which were then made available for free to the public at the mall’s compost collection spot.
+          <br><br>
+          In Menara Sunway, Sunway Pinnacle, Sunway Lagoon Theme Park, Sunway College, and Sunway University, food waste is stored for collection by a vendor who uses Black Soldier Fly (BSF) larvae and earthworms to break down the organic matter to form fertilizer. In 2020, 8,470 kg of food waste was collected. The BSF larvae and earthworms are fed to poultry farms and fisheries, while the organic fertilizer is used to nourish vegetable crops.
+        </div>
+      </span>
+    
+      <input type="checkbox" id="cbsoap" onchange="handleCheckboxChange('cbsoap')">
+      <span>
+        <div class="infotitletext">
+          REPURPOSING USED SOAP
+        </div>
+        <div class="infotext">
+          The Soapful initiative is a collaboration between Sunway Hotels & Resorts, Ecolab Sdn Bhd, Kinder Soaps Sdn Bhd, and Selangor Youth Community (SAY) aimed at repurposing used soap bars collected from the hotels. They are donated to communities in need to raise awareness of the importance of hygiene.
+          <br><br>
+          Since its launch in December 2018, the Soapful initiative has collected more than 1,000 kg of leftover soaps and produced more than 10,000 bars of repurposed soap.
+        </div>
+      </span>
+
+      <input type="checkbox" id="cbstarted" onchange="handleCheckboxChange('cbstarted')" checked>
+      <span>
+        <div class="infotitletext">
+          CLICK ON AN IMAGE TO GET STARTED
+        </div>
+      </span>
+    </div>
+    
+    <!--footer-->
+    <div class="footer">
+      <div class="footerline1">
+        <div class="footerlogocontainer">
+          <img class="footerlogo" src="sunwaylogo.png">
+        </div>
+        <div class="contactuscontainer">
+          <div class="contactus">Contact Us</div>
+        </div>
+        <div class="footernavsocialcontainer">
+          <div class="footernavsocial">
+            Social
+            <div class="footernavsocialiconcontainer">
+              <a href="https://www.facebook.com/SunwayGroupOfficial/" target="_blank"><img class="socmeico" src="fb.png"></a>
+              <a href="https://www.instagram.com/SunwayGroupOfficial/" target="_blank"><img class="socmeico" src="ig.png"></a>
+              <a href="https://www.youtube.com/c/sunwaygroup" target="_blank"><img class="socmeico" src="yt.png"></a>
+              <a href="https://www.linkedin.com/company/sunway-group/" target="_blank" ><img class="socmeico" src="in.png"></a>
+              <a href="https://www.sunway.city/kualalumpur/blog/" target="_blank" ><img class="socmeico" src="bp.png"></a>
+            </div> 
+          </div>
+        </div>
+      </div>
+    
+      <div class="footerline2">
+        <div class="hqlocationcontainer">
+          <div class="hqlocation">
+            <div class="hqt">HEADQUARTERS</div>
+            <div class="hql">Menara Sunway, Jalan Lagoon Timur,
+              <br>
+              Sunway City, 47500 , 
+              <br>Selangor D.E.</div>
+          </div>
+        </div>
+        <div class="contactemailboxcontainer">
+          <div class="contactemailbox">
+            <input type="text" class="contactemail" placeholder="Your E-mail here">
+            <button type="button" class="btemail">Send</button>
+            <textarea type="text" class="contactform" placeholder="Your feedback content"></textarea>
+          </div>
+        </div>
+        <div class="footernavsubscribecontainer">
+          <div class="footernavsubscribe">
+            Stay Updated
+            <br>
+            <div class="subscribe">
+              <input type="text" class="tbupdated" placeholder="Your E-mail here">
+              <button type="button" class="btupdated">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
