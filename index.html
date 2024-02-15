@@ -55,11 +55,28 @@
   .content a {
     text-decoration: none; /* Remove underline from links */
   }
+
+  .scrollingtext {
+    white-space: nowrap;
+    overflow: hidden;
+    animation: scrollText 10s linear infinite;
+  }
+
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
 </style>
 </head>
 <body>
 <div class="content">
   <p>Made by Anson</p>
+  <p class="scrollingtext">Disclaimer: All websites shown are coded in HTML</p>
 </div>
 <div class="container">
   <a href="https://yeettheanson.github.io/home.html" rel="noopener noreferrer" class="box">
