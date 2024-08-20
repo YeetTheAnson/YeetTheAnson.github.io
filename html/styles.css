@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+    padding-top: 20px;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.left-column, .right-column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upload-box {
+    margin: 20px 0;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    max-width: 300px;
+    position: relative;
+    background-color: #f9f9f9;
+}
+
+.upload-box p {
+    margin: 0;
+    font-size: 16px;
+    color: #777;
+}
+
+.upload-box.dragover {
+    border-color: #007bff;
+    background-color: #e6f7ff;
+}
+
+.upload-box input[type="file"] {
+    display: none;
+}
+
+#imageCanvas {
+    display: none;
+}
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(30, 16px);
+    grid-template-rows: repeat(30, 16px);
+    gap: 0px; /* Start with no gap */
+    position: relative;
+    transform: translateY(10%);
+    left: 50%;
+    margin-top: 16px;
+}
+
+.matrix .pixel {
+    width: 16px;
+    height: 16px;
+}
+
+@keyframes spreadAndShrink {
+    0% {
+        gap: 0px; /* Pixels start tightly packed */
+    }
+    50% {
+        gap: 2px; /* Pixels spread apart */
+        animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1); /* easeOutQuart */
+    }
+    100% {
+        gap: 0px; /* Pixels come back together */
+        animation-timing-function: cubic-bezier(0.47, 0, 0.75, 0.72); /* easeInSine */
+    }
+}
