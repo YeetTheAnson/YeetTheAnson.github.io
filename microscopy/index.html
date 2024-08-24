@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscopy Lab Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Microscopy Lab Planner</h1>
+            <div id="stage-content"></div>
+        </div>
+        <div class="footer">
+            <div class="progress-container">
+                <div class="progress-stage" data-stage="1">1</div>
+                <div class="progress-line"></div>
+                <div class="progress-stage" data-stage="2">2</div>
+                <div class="progress-line"></div>
+                <div class="progress-stage" data-stage="3">3</div>
+                <div class="progress-line"></div>
+                <div class="progress-stage" data-stage="4">4</div>
+            </div>
+            <button id="next-button" class="next-button" disabled>Next</button>
+        </div>
+    </div>
+    <div class="spotlight" id="spotlight"></div>
+    <script src="script.js"></script>
+</body>
+</html>
