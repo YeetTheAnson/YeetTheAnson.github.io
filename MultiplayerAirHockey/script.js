@@ -1,3 +1,7 @@
+if (window.location.protocol === 'https:') {
+    window.location.href = window.location.href.replace('https:', 'http:');
+}
+
 let socket;
 let isHost = false;
 let myBatteryLevel;
@@ -41,7 +45,6 @@ class Paddle {
         ctx.closePath();
     }
 
-    
     updatePosition(mouseX, mouseY) {
         this.vx = mouseX - this.x;
         this.vy = mouseY - this.y;
