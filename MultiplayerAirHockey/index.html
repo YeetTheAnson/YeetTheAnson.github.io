@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Hockey Multiplayer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Air Hockey Multiplayer</h1>
+        <div id="connection-container">
+            <input type="text" id="server-ip" placeholder="Enter server IP">
+            <input type="text" id="server-port" placeholder="Enter server port">
+            <button id="connect-button">Connect to Server</button>
+        </div>
+        <div id="controls-container" style="display:none;">
+            <div id="game-controls">
+                <div class="join-container">
+                    
+                    <input type="text" id="join-code" placeholder="Enter code">
+                    <button id="join-button">Join Server</button>
+                    <button id="host-button">Host Server</button>
+                </div>
+            </div>
+            <div id="user-list-container" style="display:none;">
+                <h2>Users in Room</h2>
+                <ul id="user-list-ul"></ul>
+            </div>
+        </div>
+        <div id="status-message"></div>
+        <div class="instructions">
+            <h2>Instructions:</h2>
+            <ol>
+                <li>Install Python if not already installed</li>
+                <li>Install the required library: <code>pip install websockets</code></li>
+                <li>Download the <code>server.py</code> file</li>
+                <li>Run the server using <code>python server.py</code></li>
+                <li>Enter the server IP and port, then click "Connect to Server"</li>
+            </ol>
+        </div>
+        <div class="container">
+            <div class="game-box">
+                <canvas id="hockeyTable" width="800" height="500"></canvas>
+                <button id="startButton" class="start-button">Start Game</button>
+                <div id="winnerMessage" class="winner-message"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
