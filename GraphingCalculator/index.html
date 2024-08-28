@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphing Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator">
+            <div class="display">
+                <input type="text" id="display" readonly>
+            </div>
+            <div class="buttons">
+                <div class="row">
+                    <button class="btn" onclick="clearDisplay()">C</button>
+                    <button class="btn" onclick="removeLastCharacter()">⌫</button>
+                    <button class="btn" onclick="addOperator('/')">÷</button>
+                    <button class="btn" onclick="addOperator('*')">×</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="addFunction('sin')">sin</button>
+                    <button class="btn" onclick="addFunction('cos')">cos</button>
+                    <button class="btn" onclick="addFunction('tan')">tan</button>
+                    <button class="btn" onclick="addOperator('^')">^</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="addFunction('log')">log</button>
+                    <button class="btn" onclick="addFunction('ln')">ln</button>
+                    <button class="btn" onclick="addFunction('sqrt')">√</button>
+                    <button class="btn" onclick="addOperator('-')">−</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="addNumber('7')">7</button>
+                    <button class="btn" onclick="addNumber('8')">8</button>
+                    <button class="btn" onclick="addNumber('9')">9</button>
+                    <button class="btn" onclick="addOperator('+')">+</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="addNumber('4')">4</button>
+                    <button class="btn" onclick="addNumber('5')">5</button>
+                    <button class="btn" onclick="addNumber('6')">6</button>
+                    <button class="btn" onclick="calculateResult()">=</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="addNumber('1')">1</button>
+                    <button class="btn" onclick="addNumber('2')">2</button>
+                    <button class="btn" onclick="addNumber('3')">3</button>
+                    <button class="btn" onclick="drawGraph()">Graph</button>
+                </div>
+                <div class="row">
+                    <button class="btn zero-btn" onclick="addNumber('0')">0</button>
+                    <button class="btn" onclick="addNumber('.')">.</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="addVariable('x')">𝑥</button>
+                    <button class="btn" onclick="addOperator('(')">(</button>
+                    <button class="btn" onclick="addOperator(')')">)</button>
+                    <button class="btn" onclick="addFraction()">a/b</button>
+                </div>
+                <div class="row">
+                    <button class="btn" onclick="moveCursor('left')">←</button>
+                    <button class="btn" onclick="moveCursor('right')">→</button>
+                    <button class="btn" onclick="moveCursor('up')">↑</button>
+                    <button class="btn" onclick="moveCursor('down')">↓</button>
+                </div>
+            </div>
+            <div class="input-fields">
+                <label for="domain-start">Domain Start:</label>
+                <input type="number" id="domain-start" value="-10">
+                <label for="domain-end">Domain End:</label>
+                <input type="number" id="domain-end" value="10">
+            </div>
+        </div>
+        <div class="graph">
+            <canvas id="graph-canvas"></canvas>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
