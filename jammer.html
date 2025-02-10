@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NRF24 Messenger</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 32px;
+            font-size: 2.25rem;
+        }
+
+        .status {
+            margin-bottom: 24px;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            font-weight: 500;
+        }
+
+        .connected {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .disconnected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .connect-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #991b1b;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .connect-button:hover {
+            background-color: #7f1d1d;
+            transform: translateY(-1px);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .control-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .control-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .control-button:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stop-button {
+            background-color: var(--danger-color);
+            grid-column: 1 / -1;
+            margin-top: 8px;
+        }
+
+        .stop-button:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .terminal {
+            background-color: #1e1e1e;
+            padding: 16px;
+            border-radius: 12px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .tx {
+            color: #34d399;
+        }
+
+        .rx {
+            color: #60a5fa;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 16px;
+            }
+
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .status {
+                flex-direction: column;
+                text-align: center;
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NRF24 Messenger</h1>
+        
+        <div id="connectionStatus" class="status disconnected">
+            <span>Disconnected</span>
+            <button id="connectButton" class="connect-button" onclick="connect()">Connect Device</button>
+        </div>
+
+        <div class="button-grid">
+            <button class="control-button" onclick="sendCommand('BLE')" disabled>BLE</button>
+            <button class="control-button" onclick="sendCommand('Bluetooth')" disabled>Bluetooth</button>
+            <button class="control-button" onclick="sendCommand('WiFi')" disabled>WiFi</button>
+            <button class="control-button" onclick="sendCommand('USB')" disabled>USB</button>
+            <button class="control-button" onclick="sendCommand('Video')" disabled>Video</button>
+            <button class="control-button" onclick="sendCommand('RC')" disabled>RC</button>
+            <button class="control-button" onclick="sendCommand('Zigbee')" disabled>Zigbee</button>
+            <button class="control-button" onclick="sendCommand('NRF24')" disabled>NRF24</button>
+            <button class="control-button stop-button" onclick="sendCommand('STOP')" disabled>STOP</button>
+        </div>
+
+        <div id="terminal" class="terminal"></div>
+    </div>
+
+    <script>
+        let port = null;
+        let reader = null;
+        let keepReading = true;
+        let messageBuffer = '';
+        const terminal = document.getElementById('terminal');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const connectButton = document.getElementById('connectButton');
+        const controlButtons = document.querySelectorAll('.control-button');
+
+        async function connect() {
+            try {
+                port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 115200 });
+                
+                // Update status
+                connectionStatus.className = 'status connected';
+                connectionStatus.innerHTML = '<span>Connected</span>';
+                
+                // Enable all control buttons
+                controlButtons.forEach(button => button.disabled = false);
+                
+                // Reset message buffer
+                messageBuffer = '';
+                
+                // Start reading from the serial port
+                keepReading = true;
+                startReading();
+            } catch (error) {
+                console.error('Error:', error);
+                disconnect();
+            }
+        }
+
+        async function startReading() {
+            while (port && keepReading) {
+                try {
+                    reader = port.readable.getReader();
+                    
+                    try {
+                        while (true) {
+                            const { value, done } = await reader.read();
+                            if (done) {
+                                break;
+                            }
+                            // Process the received data
+                            const text = new TextDecoder().decode(value);
+                            processReceivedData(text);
+                        }
+                    } catch (error) {
+                        console.error('Error while reading:', error);
+                        if (error.name === 'BufferOverrunError') {
+                            addToTerminal('ERROR', 'Buffer overrun - Reconnecting...');
+                        }
+                    } finally {
+                        reader.releaseLock();
+                    }
+
+                    // Small delay before trying to read again
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                } catch (error) {
+                    console.error('Fatal reading error:', error);
+                    disconnect();
+                    break;
+                }
+            }
+        }
+
+        function processReceivedData(text) {
+            // Add new data to buffer
+            messageBuffer += text;
+            
+            // Process complete messages
+            let messages = messageBuffer.split('\n');
+            
+            // If the last message is incomplete, keep it in the buffer
+            messageBuffer = messages[messages.length - 1];
+            
+            // Process all complete messages
+            for (let i = 0; i < messages.length - 1; i++) {
+                let message = messages[i].trim();
+                if (message) {  // Only show non-empty messages
+                    addToTerminal('RX', message);
+                }
+            }
+        }
+
+        async function disconnect() {
+            keepReading = false;
+            messageBuffer = '';  // Clear the buffer
+            
+            if (reader) {
+                try {
+                    await reader.cancel();
+                } catch (error) {
+                    console.error('Error cancelling reader:', error);
+                }
+                reader = null;
+            }
+            
+            if (port) {
+                try {
+                    await port.close();
+                } catch (error) {
+                    console.error('Error closing port:', error);
+                }
+                port = null;
+            }
+            
+            connectionStatus.className = 'status disconnected';
+            connectionStatus.innerHTML = `
+                <span>Disconnected</span>
+                <button id="connectButton" class="connect-button" onclick="connect()">Connect Device</button>
+            `;
+            
+            // Disable all control buttons
+            controlButtons.forEach(button => button.disabled = true);
+        }
+
+        async function sendCommand(command) {
+            if (!port) {
+                disconnect();
+                return;
+            }
+            
+            try {
+                const writer = port.writable.getWriter();
+                try {
+                    const data = new TextEncoder().encode(command + '\n');
+                    await writer.write(data);
+                    addToTerminal('TX', command);
+                } finally {
+                    writer.releaseLock();
+                }
+            } catch (error) {
+                console.error('Error sending command:', error);
+                addToTerminal('ERROR', 'Failed to send command: ' + command);
+                disconnect();
+            }
+        }
+
+        function addToTerminal(type, message) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + type.toLowerCase();
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] [${type}] ${message}`;
+            terminal.appendChild(entry);
+            
+            // Keep only the last 1000 messages
+            while (terminal.childNodes.length > 1000) {
+                terminal.removeChild(terminal.firstChild);
+            }
+            
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+    </script>
+</body>
+</html>
